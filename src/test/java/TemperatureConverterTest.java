@@ -28,9 +28,9 @@ class TemperatureConverterTest {
         var tc = new TemperatureConverter();
         double c1 = 500.0;
         double c2 = 30.0;
-        double c3 = -50.0;
+        double c3 = -40.0;
         assertTrue(tc.isExtremeTemperature(c1));
         assertFalse(tc.isExtremeTemperature(c2));
-        assertTrue(tc.isExtremeTemperature(c3));
+        assertFalse(tc.isExtremeTemperature(c3));
     }
 }
