@@ -24,6 +24,14 @@ class TemperatureConverterTest {
     }
 
     @org.junit.jupiter.api.Test
+    void kelvinToCelsius() {
+        var tc = new TemperatureConverter();
+        double k = 300.0;
+        double c = tc.kelvinToCelsius(k);
+        assertEquals(26.85, c, 0.01);
+    }
+
+    @org.junit.jupiter.api.Test
     void isExtremeTemperature() {
         var tc = new TemperatureConverter();
         double c1 = 500.0;
