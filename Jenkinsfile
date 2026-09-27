@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'docker-node' }
     environment {
         PATH = "C:\\Users\\miksu\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;${env.PATH}"
         DOCKERHUB_CREDENTIALS_ID = 'Docker_Hub'
