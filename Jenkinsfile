@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}"
+        PATH = "${env.PATH}"
         DOCKERHUB_CREDENTIALS_ID = 'Docker_Hub'
         DOCKERHUB_REPO = 'mikaenym/tempconverter'
         DOCKER_IMAGE_TAG = 'latest'
