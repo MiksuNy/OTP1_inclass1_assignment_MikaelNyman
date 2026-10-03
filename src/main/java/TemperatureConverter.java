@@ -14,8 +14,4 @@ public class TemperatureConverter {
     public boolean isExtremeTemperature(double celsius) {
         return celsius < -40.0 || celsius > 50.0;
     }
-
-    public static void main(String[] args) {
-
-    }
 }
