@@ -24,11 +24,11 @@ ENV DISPLAY=host.docker.internal:0.0
 
 RUN mvn package
 
-CMD [
-    "java",
-    "--module-path", "/javafx-sdk/lib",
-    "-add-modules", "javafx.controls, javafx.xml",
-    "-Dprism.order=sw",
-    "-Dprism.verbose=true",
-    "-jar", "app.jar"
+CMD [ \
+    "java", \
+    "--module-path", "/javafx-sdk/lib", \
+    "--add-modules", "javafx.controls, javafx.xml", \
+    "-Dprism.order=sw", \
+    "-Dprism.verbose=true", \
+    "-jar", "app.jar" \
 ]
