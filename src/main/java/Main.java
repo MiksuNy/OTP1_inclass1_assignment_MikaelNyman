@@ -84,6 +84,7 @@ public class Main extends Application {
 
             resultLabel.setText(String.format("Result: %.2f", result));
             temperatureRecordDAO.save(new TemperatureRecord(input, result, conversion));
+            loadRecords();
         } catch (Exception e) {
             showError("Error calculating, " + e.getMessage());
         }
@@ -116,7 +117,14 @@ public class Main extends Application {
     private void loadRecords() {
         try {
             List<TemperatureRecord> records = temperatureRecordDAO.getAllRecords();
+            for (var item : records) {
+                System.out.println(item.toString());
+            }
+
             tableView.getItems().setAll(records);
+            for (var item : tableView.getItems()) {
+                System.out.println(item.toString());
+            }
         } catch (SQLException e) {
             showError("Failed to load records: " + e.getMessage());
         }

@@ -14,6 +14,8 @@ public class TemperatureRecordDAO {
             preparedStatement.setDouble(1, temperatureRecord.getInput());
             preparedStatement.setDouble(2, temperatureRecord.getResult());
             preparedStatement.setString(3, temperatureRecord.getConversion());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -34,6 +36,8 @@ public class TemperatureRecordDAO {
                         )
                 );
             }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
         return records;
