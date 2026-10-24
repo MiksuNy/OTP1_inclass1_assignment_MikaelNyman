@@ -8,10 +8,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Main extends Application {
+    private static ResourceBundle rb;
+
     private final TemperatureRecordDAO temperatureRecordDAO = new TemperatureRecordDAO();
 
     private TextField inputTextField;
@@ -31,17 +32,17 @@ public class Main extends Application {
         inputTextField = new TextField();
         conversionComboBox = new ComboBox<>();
         List<String> conversions = new ArrayList<>();
-        conversions.add("Fahrenheit to Celsius");
-        conversions.add("Celsius to Fahrenheit");
-        conversions.add("Kelvin to Celsius");
+        conversions.add("Fahrenheit -> Celsius");
+        conversions.add("Celsius -> Fahrenheit");
+        conversions.add("Kelvin -> Celsius");
         conversionComboBox.getItems().addAll(conversions);
 
-        Button calcButton = new Button("Calculate & Save");
+        Button calcButton = new Button(rb.getString("button_calculate_and_save"));
         resultLabel = new Label();
 
-        form.add(new Label("Input:"), 0, 0);
+        form.add(new Label(rb.getString("label_input")), 0, 0);
         form.add(inputTextField, 1, 0);
-        form.add(new Label("Conversion:"), 0, 1);
+        form.add(new Label(rb.getString("label_conversion")), 0, 1);
         form.add(conversionComboBox, 1, 1);
         form.add(calcButton, 1, 2);
         form.add(resultLabel, 1, 3);
@@ -51,7 +52,7 @@ public class Main extends Application {
 
         calcButton.setOnAction(e -> handleCalculateAndSave());
 
-        VBox root = new VBox(15, form, new Label("Saved Records:"), tableView);
+        VBox root = new VBox(15, form, new Label(rb.getString("label_saved_records")), tableView);
         root.setPadding(new Insets(15));
         root.setAlignment(Pos.TOP_LEFT);
 
@@ -65,28 +66,28 @@ public class Main extends Application {
             String conversion = conversionComboBox.getValue();
 
             if (conversion == null) {
-                showError("Please select a conversion");
+                showError(rb.getString("error_please_select_a_conversion"));
                 return;
             }
 
             double result = 0.0;
             switch (conversion) {
-                case "Fahrenheit to Celsius":
+                case "Fahrenheit -> Celsius":
                     result = TemperatureConverter.fahrenheitToCelsius(input);
                     break;
-                case "Celsius to Fahrenheit":
+                case "Celsius -> Fahrenheit":
                     result = TemperatureConverter.celsiusToFahrenheit(input);
                     break;
-                case "Kelvin to Celsius":
+                case "Kelvin -> Celsius":
                     result = TemperatureConverter.kelvinToCelsius(input);
                     break;
             }
 
-            resultLabel.setText(String.format("Result: %.2f", result));
+            resultLabel.setText(String.format(rb.getString("label_result"), result));
             temperatureRecordDAO.save(new TemperatureRecord(input, result, conversion));
             loadRecords();
         } catch (Exception e) {
-            showError("Error calculating, " + e.getMessage());
+            showError(rb.getString("error_calculating") + e.getMessage());
         }
     }
 
@@ -126,11 +127,39 @@ public class Main extends Application {
                 System.out.println(item.toString());
             }
         } catch (SQLException e) {
-            showError("Failed to load records: " + e.getMessage());
+            showError(rb.getString("error_failed_to_load_records") + e.getMessage());
         }
     }
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Select a language");
+        System.out.println("1: English");
+        System.out.println("2: Finnish");
+        System.out.println("3: Japanese");
+        System.out.println("4: Swedish");
+
+        Locale locale;
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1:
+                locale = new Locale("en", "us");
+                break;
+            case 2:
+                locale = new Locale("fi", "fi");
+                break;
+            case 3:
+                locale = new Locale("ja", "jp");
+                break;
+            case 4:
+                locale = new Locale("sv", "se");
+                break;
+            default:
+                System.out.println("Invalid choice, using default language");
+                locale = new Locale("en", "us");
+        }
+
+        rb = ResourceBundle.getBundle("MessageBundle", locale);
         launch(args);
     }
 }
