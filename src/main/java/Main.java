@@ -1,5 +1,6 @@
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.NodeOrientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,14 +16,25 @@ public class Main extends Application {
 
     private final TemperatureRecordDAO temperatureRecordDAO = new TemperatureRecordDAO();
 
+    private VBox root = new VBox();
     private TextField inputTextField;
     private ComboBox<String> conversionComboBox;
-    private Label resultLabel;
     private TableView<TemperatureRecord> tableView;
+    private Label resultLabel = new Label();
+    private Label inputLabel = new Label();
+    private Label conversionLabel = new Label();
+    private Label savedRecordsLabel = new Label();
+    private Button calcButton = new Button();
 
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("Temperature Converter");
+
+        ComboBox<String> langBox = new ComboBox<>();
+        langBox.getItems().addAll("English", "Finnish", "Japanese", "Swedish", "Arabic");
+        langBox.setValue("English");
+        langBox.setOnAction(e -> updateLanguage(langBox.getValue()));
+        updateLanguage("English");
 
         GridPane form = new GridPane();
         form.setHgap(10);
@@ -37,12 +49,15 @@ public class Main extends Application {
         conversions.add("Kelvin -> Celsius");
         conversionComboBox.getItems().addAll(conversions);
 
-        Button calcButton = new Button(rb.getString("button_calculate_and_save"));
+        calcButton = new Button(rb.getString("button_calculate_and_save"));
         resultLabel = new Label();
 
-        form.add(new Label(rb.getString("label_input")), 0, 0);
+        inputLabel = new Label(rb.getString("label_input"));
+        form.add(inputLabel, 0, 0);
         form.add(inputTextField, 1, 0);
-        form.add(new Label(rb.getString("label_conversion")), 0, 1);
+        form.add(langBox, 2, 0);
+        conversionLabel = new Label(rb.getString("label_conversion"));
+        form.add(conversionLabel, 0, 1);
         form.add(conversionComboBox, 1, 1);
         form.add(calcButton, 1, 2);
         form.add(resultLabel, 1, 3);
@@ -52,12 +67,51 @@ public class Main extends Application {
 
         calcButton.setOnAction(e -> handleCalculateAndSave());
 
-        VBox root = new VBox(15, form, new Label(rb.getString("label_saved_records")), tableView);
+        savedRecordsLabel = new Label(rb.getString("label_saved_records"));
+        root = new VBox(15, form, savedRecordsLabel, tableView);
         root.setPadding(new Insets(15));
         root.setAlignment(Pos.TOP_LEFT);
 
+
         stage.setScene(new Scene(root, 500, 500));
         stage.show();
+    }
+
+    private void updateLanguage(String choice) {
+        Locale locale;
+        switch (choice) {
+            case "English":
+                locale = new Locale("en", "us");
+                break;
+            case "Finnish":
+                locale = new Locale("fi", "fi");
+                break;
+            case "Japanese":
+                locale = new Locale("ja", "jp");
+                break;
+            case "Swedish":
+                locale = new Locale("sv", "se");
+                break;
+            case "Arabic":
+                locale = new Locale("ar", "sa");
+                break;
+            default:
+                locale = Locale.getDefault();
+                break;
+        }
+        rb = ResourceBundle.getBundle("MessageBundle", locale);
+        resultLabel.setText("");
+        inputLabel.setText(rb.getString("label_input"));
+        conversionLabel.setText(rb.getString("label_conversion"));
+        savedRecordsLabel.setText(rb.getString("label_saved_records"));
+        calcButton.setText(rb.getString("button_calculate_and_save"));
+        switch (rb.getLocale().toString()) {
+            case "ar_SA":
+                root.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+                break;
+            default:
+                root.setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
+        }
     }
 
     private void handleCalculateAndSave() {
@@ -132,34 +186,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Select a language");
-        System.out.println("1: English");
-        System.out.println("2: Finnish");
-        System.out.println("3: Japanese");
-        System.out.println("4: Swedish");
-
-        Locale locale;
-        int choice = scanner.nextInt();
-        switch (choice) {
-            case 1:
-                locale = new Locale("en", "us");
-                break;
-            case 2:
-                locale = new Locale("fi", "fi");
-                break;
-            case 3:
-                locale = new Locale("ja", "jp");
-                break;
-            case 4:
-                locale = new Locale("sv", "se");
-                break;
-            default:
-                System.out.println("Invalid choice, using default language");
-                locale = new Locale("en", "us");
-        }
-
-        rb = ResourceBundle.getBundle("MessageBundle", locale);
         launch(args);
     }
 }

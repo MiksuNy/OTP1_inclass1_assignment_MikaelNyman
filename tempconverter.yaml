@@ -1,0 +1,47 @@
+---
+# 1. Database Credentials Secret
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mariadb-secret
+type: Opaque
+stringData:
+  mariadb-root-password: "1234"
+  mariadb-database: "tempconverter"
+
+---
+# 2. JavaFX App Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tempconverter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tempconverter
+  template:
+    metadata:
+      labels:
+        app: tempconverter
+    spec:
+      containers:
+        - name: tempconverter
+          image: mikaelnyman/tempconverter:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DB_HOST
+              value: "host.minikube.internal"
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_NAME
+              value: "tempconverter"
+            - name: DB_USER
+              value: "root"
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-secret
+                  key: mariadb-root-password
+            - name: DISPLAY
+              value: "host.minikube.internal:0.0"
