@@ -14,12 +14,12 @@ public class TemperatureRecordDAO {
             preparedStatement.setDouble(1, temperatureRecord.getInput());
             preparedStatement.setDouble(2, temperatureRecord.getResult());
             preparedStatement.setString(3, temperatureRecord.getConversion());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new SQLException(e);
         }
     }
 
-    public List<TemperatureRecord> getAllRecords() throws SQLException {
+    public List<TemperatureRecord> getAllRecords() {
         List<TemperatureRecord> records = new ArrayList<>();
         String sql = "SELECT * FROM temperature_record";
 
@@ -36,7 +36,7 @@ public class TemperatureRecordDAO {
                         )
                 );
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 

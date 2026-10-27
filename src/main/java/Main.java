@@ -180,7 +180,7 @@ public class Main extends Application {
             for (var item : tableView.getItems()) {
                 System.out.println(item.toString());
             }
-        } catch (SQLException e) {
+        } catch (RuntimeException e) {
             showError(rb.getString("error_failed_to_load_records") + e.getMessage());
         }
     }
