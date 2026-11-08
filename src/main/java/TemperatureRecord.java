@@ -2,19 +2,22 @@ public class TemperatureRecord {
     private int id;
     private double input;
     private double result;
-    private String conversion;
+    private TemperatureUnit conversionFrom;
+    private TemperatureUnit conversionTo;
 
-    public TemperatureRecord(double input, double result, String conversion) {
+    public TemperatureRecord(double input, double result, TemperatureUnit conversionFrom, TemperatureUnit conversionTo) {
         this.input = input;
         this.result = result;
-        this.conversion = conversion;
+        this.conversionFrom = conversionFrom;
+        this.conversionTo = conversionTo;
     }
 
-    public TemperatureRecord(int id, double input, double result, String conversion) {
+    public TemperatureRecord(int id, double input, double result, TemperatureUnit conversionFrom, TemperatureUnit conversionTo) {
         this.id = id;
         this.input = input;
         this.result = result;
-        this.conversion = conversion;
+        this.conversionFrom = conversionFrom;
+        this.conversionTo = conversionTo;
     }
 
     public int getId() {
@@ -29,7 +32,11 @@ public class TemperatureRecord {
         return result;
     }
 
-    public String getConversion() {
-        return conversion;
+    public TemperatureUnit getConversionFrom() {
+        return conversionFrom;
+    }
+
+    public TemperatureUnit getConversionTo() {
+        return conversionTo;
     }
 }
