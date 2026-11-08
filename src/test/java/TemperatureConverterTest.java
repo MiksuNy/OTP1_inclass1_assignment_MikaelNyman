@@ -2,6 +2,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TemperatureConverterTest {
     @org.junit.jupiter.api.Test
+    void convertTest() {
+        assertEquals(32.0, TemperatureConverter.convert(TemperatureUnit.Celsius, TemperatureUnit.Fahrenheit, 0.0), 0.01);
+        assertEquals(212.0, TemperatureConverter.convert(TemperatureUnit.Celsius, TemperatureUnit.Fahrenheit, 100.0), 0.01);
+        assertEquals(273.15, TemperatureConverter.convert(TemperatureUnit.Celsius, TemperatureUnit.Kelvin, 0.0), 0.01);
+        assertEquals(273.15, TemperatureConverter.convert(TemperatureUnit.Fahrenheit, TemperatureUnit.Kelvin, 32.0), 0.01);
+        assertEquals(0.0, TemperatureConverter.convert(TemperatureUnit.Kelvin, TemperatureUnit.Celsius, 273.15), 0.01);
+        assertEquals(32.0, TemperatureConverter.convert(TemperatureUnit.Kelvin, TemperatureUnit.Fahrenheit, 273.15), 0.01);
+        assertEquals(25.0, TemperatureConverter.convert(TemperatureUnit.Celsius, TemperatureUnit.Celsius, 25.0), 0.01);
+        assertEquals(75.0, TemperatureConverter.convert(TemperatureUnit.Fahrenheit, TemperatureUnit.Fahrenheit, 75.0), 0.01);
+        assertEquals(300.0, TemperatureConverter.convert(TemperatureUnit.Kelvin, TemperatureUnit.Kelvin, 300.0), 0.01);
+        assertEquals(0.0, TemperatureConverter.convert(null, TemperatureUnit.Celsius, 50.0), 0.01);
+        assertEquals(0.0, TemperatureConverter.convert(TemperatureUnit.Celsius, null, 50.0), 0.01);
+    }
+
+    @org.junit.jupiter.api.Test
     void fahrenheitToCelsius() {
         double f1 = 123.0;
         double c1 = TemperatureConverter.fahrenheitToCelsius(f1);
