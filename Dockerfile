@@ -22,6 +22,8 @@ ENV DISPLAY=host.docker.internal:0.0
 
 RUN mvn clean package
 
+COPY target/OTP1_inclass1_assignment_MikaelNyman-1.0-SNAPSHOT.jar app.jar
+
 CMD [ \
     "java", \
     "--module-path", "/javafx-sdk/lib", \
