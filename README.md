@@ -16,6 +16,13 @@ Unit tests are located in "src/test/java/", tests cover only the temperature con
 
 A DAO class is used for interactions with the database, so the rest of the application code is not directly responsible for managing database connections or creating SQL statements. Temperature records are created every time a conversion is done, with the result being stored in the database. The database schema has one table: "temperature_record" which contains the id, input temperature, result and conversion used.
 
+### DB localization approach
+The database localization approach chosen was field (column) localization.
+
+The database contains only one table, temperature_record. It has an ID, input temperature, result temperature, and 10 other columns for the conversion_from and conversion_to localization.
+
+The reason for choosing the approach was because of the simplicity in implementing it to the existing code and limited database changes.
+
 #### Jenkins pipeline
 1. Checkout repo
 2. Build with "mvn clean install"
