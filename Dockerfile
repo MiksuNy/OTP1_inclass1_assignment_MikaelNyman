@@ -18,11 +18,9 @@ RUN mkdir -p /javafx-sdk \
     && mv /javafx-sdk/javafx-sdk-21/lib /javafx-sdk/lib \
     && rm -rf /javafx-sdk/javafx-sdk-21 javafx.zip
 
-COPY target/OTP1_inclass1_assignment_MikaelNyman-1.0-SNAPSHOT.jar app.jar
-
 ENV DISPLAY=host.docker.internal:0.0
 
-RUN mvn package
+RUN mvn clean package
 
 CMD [ \
     "java", \
